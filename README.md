@@ -1,2 +1,3 @@
-# STASH-STORE
-STASH STORE, is a app store mainly for STASH OS but can be used in other projects
+# APP STORE
+App Store, is a App Store for Stash OS.App Store will be open source for anyone to refine or change 
+
