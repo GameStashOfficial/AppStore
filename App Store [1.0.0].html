@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stash OS - App Store</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+          colors: { oled: { bg: '#0a0a0a', card: '#141414' } },
+          screens: {
+            'tablet': '768px'
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <script src="https://stash-files.b-cdn.net/APPS/App%20Store/app.js" defer></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0a0a0a;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 9999px; }
+
+    /* Desktop Nav Glass Transition */
+    .nav-at-top {
+      background-color: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .nav-scrolled {
+      background-color: rgba(10, 10, 10, 0.65);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .tab-btn { 
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      outline: none !important;
+      box-shadow: none !important;
+      border: none !important;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .tab-btn.inactive {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #a1a1aa;
+    }
+    .tab-btn.inactive:hover {
+      background-color: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+    }
+    .tab-btn.active {
+      background-color: rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+    }
+
+    .text-shadow-strong {
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 4px 20px rgba(0, 0, 0, 0.8);
+    }
+
+    .umbrel-card {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .umbrel-card:hover {
+      background-color: rgba(38, 40, 42, 0.8);
+    }
+
+    @keyframes bounceRecoil {
+      0% { transform: translateY(0); }
+      35% { transform: translateY(-24px); }
+      65% { transform: translateY(8px); }
+      100% { transform: translateY(0); }
+    }
+    .bounce-recoil {
+      animation: bounceRecoil 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .desc-12-lines {
+      display: -webkit-box;
+      -webkit-line-clamp: 12;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+    }
+
+    .page-blur-transition {
+      transition: filter 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+    .page-blur-active {
+      filter: blur(20px);
+      opacity: 0.2;
+    }
+
+    .loader {
+      --dim: 3.5rem;
+      width: var(--dim);
+      height: var(--dim);
+      position: relative;
+      animation: spin988 2s linear infinite;
+    }
+
+    .loader .circle {
+      --color: #ffffff;
+      --dim: 1.25rem;
+      width: var(--dim);
+      height: var(--dim);
+      background-color: var(--color);
+      border-radius: 50%;
+      position: absolute;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+    }
+
+    .loader .circle:nth-child(1) { top: 0; left: 0; }
+    .loader .circle:nth-child(2) { top: 0; right: 0; }
+    .loader .circle:nth-child(3) { bottom: 0; left: 0; }
+    .loader .circle:nth-child(4) { bottom: 0; right: 0; }
+
+    @keyframes spin988 {
+      0% { transform: scale(1) rotate(0); }
+      20%, 25% { transform: scale(1.3) rotate(90deg); }
+      45%, 50% { transform: scale(1) rotate(180deg); }
+      70%, 75% { transform: scale(1.3) rotate(270deg); }
+      95%, 100% { transform: scale(1) rotate(360deg); }
+    }
+
+    .tooltip-box {
+      position: relative;
+    }
+    .tooltip-bubble {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      margin-top: 8px;
+      background-color: rgba(28, 28, 30, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(16px);
+      color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 50;
+    }
+
+    .tooltip-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px;
+      border-style: solid;
+      border-color: transparent transparent rgba(28, 28, 30, 0.95) transparent;
+    }
+
+    .tooltip-box:hover .tooltip-bubble {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(10px);
+    }
+
+    .view-section {
+      padding-top: 24px;
+      padding-bottom: 100px; 
+    }
+    @media (min-width: 640px) {
+      .view-section {
+        padding-top: 160px; 
+        padding-bottom: 40px;
+      }
+    }
+
+    .mobile-search-closed {
+      max-width: 0px;
+      opacity: 0;
+      padding: 0;
+      pointer-events: none;
+    }
+    .mobile-search-open {
+      max-width: 100%;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .slide-dot-btn {
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .slide-dot-btn .progress-fill {
+      transition: width 0.1s linear;
+    }
+  </style>
+</head>
+<body class="bg-oled-bg text-gray-100 min-h-screen antialiased selection:bg-white/20 selection:text-white overflow-x-hidden">
+
+  <div id="startup-overlay" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-2xl flex flex-col items-center justify-center transition-opacity duration-300">
+    <div class="loader">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+    </div>
+  </div>
+
+  <header id="navbar" class="hidden sm:block fixed top-0 left-0 right-0 z-50 transition-colors duration-300 nav-at-top py-2">
+    <div class="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col justify-end h-full">
+      
+      <div id="top-nav-row" class="flex items-center justify-between h-14 md:h-16 transition-all duration-300 opacity-100 overflow-hidden shrink-0">
+        
+        <a href="#" onclick="showView('home-page-view'); return false;" id="brand-logo" class="flex items-center gap-3 shrink-0 cursor-pointer">
+          <img 
+            src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/5271ece1e8046937274d6c2e14f9588a58065bd9/Stash%20%5BLOGO%5D.png" 
+            alt="Stash OS Logo" 
+            class="h-7 sm:h-8 md:h-10 w-auto object-contain active:scale-95 transition-transform"
+          />
+          <span class="font-extrabold text-lg sm:text-xl md:text-2xl tracking-tight text-white">App Store</span>
+        </a>
+
+        <div class="relative">
+          <form id="search-form" onsubmit="handleSearch(event)" class="relative flex items-center">
+            <div class="relative flex items-center w-56 sm:w-64 md:w-80">
+              <input
+                id="search-input"
+                type="text"
+                placeholder="Search store apps..."
+                autocomplete="off"
+                oninput="handleSearchSuggestions(this.value)"
+                onfocus="handleSearchSuggestions(this.value)"
+                class="w-full bg-white/[0.07] hover:bg-white/[0.12] focus:bg-white/[0.14] border border-white/10 text-white placeholder-gray-400 pl-9 md:pl-10 pr-9 md:pr-10 py-2 rounded-full text-xs md:text-sm font-medium outline-none h-9 md:h-10 transition-all"
+              />
+              <button type="submit" class="absolute left-3 text-gray-400 hover:text-white cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              </button>
+            </div>
+          </form>
+
+          <div id="search-suggestions" class="hidden absolute top-full left-0 right-0 mt-2 bg-neutral-900/95 backdrop-blur-2xl border border-white/15 rounded-2xl p-2 shadow-2xl z-50"></div>
+        </div>
+      </div>
+
+      <div class="py-2 flex items-center justify-center shrink-0">
+        <div class="overflow-x-auto no-scrollbar py-1 max-w-full">
+          <nav class="flex items-center justify-center gap-1.5 sm:gap-2 md:gap-3 min-w-max mx-auto px-1 py-0.5" id="category-nav">
+            
+            <button onclick="setCategory('All', this); showView('home-page-view');" class="tab-btn active flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-bold cursor-pointer">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Discover.webp" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="All Apps">
+              <span>All Apps</span>
+            </button>
+
+            <button onclick="setCategory('AI', this); showView('home-page-view');" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/AI.png" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="AI">
+              <span>AI</span>
+            </button>
+
+            <button onclick="setCategory('Game', this); showView('home-page-view');" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Media.png" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="Game and Media">
+              <span>Game&Media</span>
+            </button>
+
+            <button onclick="setCategory('Files & Productivity', this); showView('home-page-view');" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Files-Productivity.png" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="Files and Productivity">
+              <span>Files & Productivity</span>
+            </button>
+
+            <button onclick="setCategory('Social', this); showView('home-page-view');" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Social.png" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="Social">
+              <span>Social</span>
+            </button>
+
+            <a href="#" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-bold ml-1 cursor-pointer">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/launch-your-app.png" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="Submit App">
+              <span>Submit App</span>
+            </a>
+
+          </nav>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <div class="sm:hidden fixed bottom-4 inset-x-3 z-50 flex items-center justify-between gap-2 bg-neutral-900/85 backdrop-blur-2xl border border-white/15 rounded-full p-2 shadow-[0_12px_40px_rgba(0,0,0,0.8)]">
+    
+    <div id="mobile-category-bar" class="flex-1 overflow-x-auto no-scrollbar flex items-center gap-1.5 transition-all duration-300">
+      
+      <button onclick="setCategory('All', this); showView('home-page-view');" class="tab-btn active shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-bold cursor-pointer">
+        <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Discover.webp" class="w-4 h-4 object-contain" alt="All">
+        <span>All</span>
+      </button>
+
+      <button onclick="setCategory('AI', this); showView('home-page-view');" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
+        <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/AI.png" class="w-4 h-4 object-contain" alt="AI">
+        <span>AI</span>
+      </button>
+
+      <button onclick="setCategory('Game', this); showView('home-page-view');" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
+        <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Media.png" class="w-4 h-4 object-contain" alt="Games">
+        <span>Games</span>
+      </button>
+
+      <button onclick="setCategory('Files & Productivity', this); showView('home-page-view');" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
+        <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Files-Productivity.png" class="w-4 h-4 object-contain" alt="Files">
+        <span>Files</span>
+      </button>
+
+      <button onclick="setCategory('Social', this); showView('home-page-view');" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
+        <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Social.png" class="w-4 h-4 object-contain" alt="Social">
+        <span>Social</span>
+      </button>
+
+    </div>
+
+    <div id="mobile-search-wrapper" class="mobile-search-closed flex-1 overflow-hidden transition-all duration-300 ease-out">
+      <form onsubmit="handleSearch(event)" class="relative flex items-center w-full">
+        <input
+          id="mobile-search-input"
+          type="text"
+          placeholder="Search apps..."
+          class="w-full bg-white/10 border border-white/20 text-white placeholder-gray-400 pl-8 pr-8 py-2 rounded-full text-xs font-medium outline-none h-9"
+        />
+        <svg class="w-3.5 h-3.5 text-gray-400 absolute left-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      </form>
+    </div>
+
+    <button id="mobile-search-toggle-btn" onclick="toggleMobileSearch()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 shrink-0 flex items-center justify-center text-white backdrop-blur-xl active:scale-90 transition-all shadow-md cursor-pointer">
+      <svg id="mobile-search-icon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+    </button>
+
+  </div>
+
+  <div id="page-wrapper" class="page-blur-transition w-full min-h-[100vh]">
+    
+    <div id="home-page-view" class="view-section">
+      
+      <section id="hero-banner-section" class="w-full mb-6 sm:mb-8">
+        <div class="relative w-full h-[220px] sm:h-[300px] md:h-[380px] lg:h-[440px] overflow-hidden">
+          <img 
+            id="hero-banner-img"
+            src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/file_0000000063e881f58b5666aa62df44bc.png" 
+            alt="Stash OS Banner" 
+            class="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          />
+          <div class="relative w-full max-w-7xl mx-auto px-5 sm:px-8 md:px-12 h-full flex flex-col justify-center z-10 bg-gradient-to-r from-black/85 via-black/40 to-transparent">
+            <div class="max-w-2xl">
+              <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.12] text-shadow-strong">
+                Hundreds of apps.<br>
+                <span class="text-gray-100">Unblcked. All yours.</span>
+              </h1>
+              <p class="mt-2 sm:mt-4 md:mt-5 text-xs sm:text-sm md:text-base lg:text-lg text-gray-200 font-medium leading-relaxed max-w-xl text-shadow-strong">
+                Discover self-hosted apps for StashOS — your own private OS, in your PC.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <section id="serving-hot-section" class="mb-8 sm:mb-12 md:mb-14">
+          <div class="flex items-center justify-between mb-3 sm:mb-5 md:mb-6">
+            <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-white tracking-tight">Serving hot now</h2>
+          </div>
+          <div id="serving-hot-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-2.5 sm:gap-4 md:gap-5"></div>
+        </section>
+
+        <section id="slideshow-section" class="mb-10 sm:mb-14 w-full overflow-hidden">
+          <div id="slideshow-track" class="flex overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory py-2 cursor-grab active:cursor-grabbing w-full gap-3 sm:gap-4">
+            <div class="carousel-card shrink-0 w-full aspect-[2.1/1] sm:aspect-[2.2/1] md:aspect-[2.3/1] rounded-[20px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden bg-white/[0.015] snap-center relative">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/banner-hermes-agent.png" class="w-full h-full object-cover" alt="Banner">
+            </div>
+            <div class="carousel-card shrink-0 w-full aspect-[2.1/1] sm:aspect-[2.2/1] md:aspect-[2.3/1] rounded-[20px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden bg-white/[0.015] snap-center relative">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/banner-immich.png" class="w-full h-full object-cover" alt="Banner">
+            </div>
+            <div class="carousel-card shrink-0 w-full aspect-[2.1/1] sm:aspect-[2.2/1] md:aspect-[2.3/1] rounded-[20px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden bg-white/[0.015] snap-center relative">
+              <img src="https://github.com/andrewrodela447/STASH-STORE/blob/main/IMAGES/banner-open-webui.webp?raw=true" class="w-full h-full object-cover" alt="Banner">
+            </div>
+            <div class="carousel-card shrink-0 w-full aspect-[2.1/1] sm:aspect-[2.2/1] md:aspect-[2.3/1] rounded-[20px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden bg-white/[0.015] snap-center relative">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/banner-openclaw.webp" class="w-full h-full object-cover" alt="Banner">
+            </div>
+            <div class="carousel-card shrink-0 w-full aspect-[2.1/1] sm:aspect-[2.2/1] md:aspect-[2.3/1] rounded-[20px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden bg-white/[0.015] snap-center relative">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/banner-opencode.png" class="w-full h-full object-cover" alt="Banner">
+            </div>
+            <div class="carousel-card shrink-0 w-full aspect-[2.1/1] sm:aspect-[2.2/1] md:aspect-[2.3/1] rounded-[20px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden bg-white/[0.015] snap-center relative">
+              <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/file_000000005e3c81fd826057fcd5408d04.png" class="w-full h-full object-cover" alt="Banner">
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between mt-3 sm:mt-5 md:mt-7 px-1">
+            <div class="flex items-center gap-2.5 sm:gap-3.5 md:gap-4 px-4 py-2 sm:px-6 sm:py-3 md:px-7 md:py-4 rounded-full bg-white/[0.08] border border-white/15 backdrop-blur-lg" id="dots-container"></div>
+            <div class="flex items-center gap-2 sm:gap-3 md:gap-4">
+              <button onclick="prevSlide()" class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-white/[0.09] hover:bg-white/[0.18] border border-white/15 text-white flex items-center justify-center active:scale-90 cursor-pointer backdrop-blur-lg transition-transform">
+                <svg class="w-4 sm:w-5 h-4 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+              </button>
+              <button onclick="nextSlide()" class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-white/[0.09] hover:bg-white/[0.18] border border-white/15 text-white flex items-center justify-center active:scale-90 cursor-pointer backdrop-blur-lg transition-transform">
+                <svg class="w-4 sm:w-5 h-4 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section id="apps-grid-section" class="mb-16">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4 mb-4 sm:mb-8">
+            <div>
+              <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight" id="home-grid-title">All apps</h2>
+              <p class="text-xs sm:text-sm text-gray-400 mt-1 font-medium">Browse self-hosted apps for your StashOS home server.</p>
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0 mt-2 sm:mt-0">
+              <span class="text-xs font-semibold text-gray-400">Sort by:</span>
+              <select id="sort-select" onchange="handleSortChange(this.value)" class="bg-white/[0.07] hover:bg-white/[0.12] border border-white/10 text-white text-xs font-bold rounded-full px-3 py-1.5 sm:px-3.5 sm:py-2 outline-none cursor-pointer">
+                <option value="alphabetical" class="bg-neutral-900 text-white">Alphabetical (A-Z)</option>
+                <option value="downloads" class="bg-neutral-900 text-white">Most Downloaded</option>
+                <option value="likes" class="bg-neutral-900 text-white">Most Liked</option>
+                <option value="newest" class="bg-neutral-900 text-white">Newest Apps</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="all-apps-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3.5 md:gap-4 transition-all duration-300"></div>
+
+          <div id="lazy-loader-status" class="mt-8 text-center py-4">
+            <p id="end-feed-text" class="text-xs text-gray-500 font-medium hidden">Reached end of apps list</p>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <div id="search-page-view" class="view-section hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen">
+      <div class="flex items-center justify-between mb-6 sm:mb-8 border-b border-white/10 pb-4 sm:pb-5">
+        <div>
+          <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">Search Results</h1>
+          <p class="text-xs sm:text-sm text-gray-400 mt-1">Showing matches for "<span id="search-query-display" class="text-white font-semibold"></span>"</p>
+        </div>
+        <button onclick="showView('home-page-view')" class="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs font-bold cursor-pointer transition-all active:scale-95">
+          ✕ Close
+        </button>
+      </div>
+
+      <div id="search-results-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4"></div>
+      
+      <div id="search-empty-state" class="hidden p-8 sm:p-14 rounded-[28px] sm:rounded-[32px] bg-white/[0.02] border border-white/10 text-center mt-8">
+        <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3">
+          <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h2 class="text-base sm:text-xl font-bold text-white mb-1">No apps found</h2>
+        <p class="text-gray-400 text-xs sm:text-sm max-w-md mx-auto">Try searching for different keywords or explore our category collections.</p>
+      </div>
+    </div>
+
+    <div id="app-details-view" class="view-section hidden pb-20">
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:gap-7 md:gap-8 mb-8">
+          <div class="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-[22px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden shrink-0 shadow-2xl bg-white/[0.02] border border-white/10">
+            <img id="detail-app-img" src="" class="w-full h-full object-cover" alt="App Icon" />
+          </div>
+
+          <div class="flex flex-col items-center sm:items-start text-center sm:text-left justify-center pt-1 w-full">
+            <h1 id="detail-app-title" class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight"></h1>
+            
+            <div class="mt-4 sm:mt-6 flex items-center gap-3 sm:gap-4 w-full sm:max-w-md">
+              
+              <div class="tooltip-box" id="detail-download-container">
+                <a 
+                  id="detail-btn-download"
+                  href="#" 
+                  download
+                  class="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-[18px] sm:rounded-[22px] bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center transition-all active:scale-95 shadow-lg backdrop-blur-md cursor-pointer group"
+                >
+                  <svg id="detail-download-icon" class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                  </svg>
+                </a>
+                <div class="tooltip-bubble" id="detail-download-tooltip">Download</div>
+              </div>
+
+              <div class="tooltip-box flex-1">
+                <button 
+                  id="detail-btn-stash"
+                  onclick="toggleAppInstall()"
+                  class="w-full h-12 sm:h-14 rounded-[18px] sm:rounded-[22px] bg-white text-black font-extrabold text-xs sm:text-sm md:text-base hover:bg-gray-200 transition-all active:scale-95 shadow-[0_4px_24px_rgba(255,255,255,0.15)] flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <span id="detail-stash-btn-text">Add to Stash</span>
+                  <svg id="detail-stash-btn-icon" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16m8-8H4"/></svg>
+                </button>
+                <div class="tooltip-bubble" id="detail-stash-tooltip">Add to Stash</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        
+        <div class="w-full grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4 py-3 sm:py-4 mb-8 text-center bg-transparent border-y border-white/5">
+          <div class="flex flex-col justify-center p-1 sm:p-2"><span class="text-[10px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Downloads</span><span id="detail-stat-downloads" class="text-sm sm:text-base md:text-lg font-bold text-white mt-0.5">—</span></div>
+          <div class="flex flex-col justify-center p-1 sm:p-2"><span class="text-[10px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Size</span><span id="detail-stat-filesize" class="text-sm sm:text-base md:text-lg font-bold text-white mt-0.5">—</span></div>
+          <div class="flex flex-col justify-center p-1 sm:p-2"><span class="text-[10px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Category</span><span id="detail-stat-category" class="text-sm sm:text-base md:text-lg font-bold text-white mt-0.5">—</span></div>
+          <div class="flex flex-col justify-center p-1 sm:p-2"><span class="text-[10px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Developer</span><span id="detail-stat-developer" class="text-sm sm:text-base md:text-lg font-bold text-white mt-0.5 truncate max-w-full">—</span></div>
+          <div class="flex flex-col justify-center p-1 sm:p-2 col-span-2 sm:col-span-1"><span class="text-[10px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Submitted By</span><span id="detail-stat-submittedby" class="text-sm sm:text-base md:text-lg font-bold text-white mt-0.5 truncate max-w-full">—</span></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 mb-14">
+          <div class="lg:col-span-7 flex flex-col bg-transparent">
+            <h2 class="text-lg sm:text-xl font-bold text-white mb-3">About this app</h2>
+            <div id="detail-desc-wrapper" class="desc-12-lines transition-all duration-300">
+              <p id="detail-desc-content" class="text-xs sm:text-sm md:text-base text-gray-300 leading-relaxed font-normal space-y-3 whitespace-pre-line"></p>
+            </div>
+            <div class="mt-3">
+              <button id="detail-desc-btn" onclick="toggleDescription()" class="hidden text-xs font-bold text-white hover:text-purple-300 transition-colors cursor-pointer">Read more</button>
+            </div>
+          </div>
+          <div class="lg:col-span-5 bg-transparent">
+            <h2 class="text-lg sm:text-xl font-bold text-white mb-5">Version History</h2>
+            <div class="relative pl-6 space-y-6 sm:space-y-8" id="versions-timeline-container">
+              <div class="absolute left-2.5 top-3 bottom-3 w-[2px] bg-white/10 pointer-events-none"></div>
+            </div>
+          </div>
+        </div>
+
+        <section class="mt-12">
+          <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight mb-5">Related apps</h2>
+          <div id="related-apps-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4"></div>
+        </section>
+
+      </main>
+    </div>
+
+  </div>
+
+  <script>
+    let isMobileSearchOpen = false;
+
+    function toggleMobileSearch() {
+      const categoryBar = document.getElementById('mobile-category-bar');
+      const searchWrapper = document.getElementById('mobile-search-wrapper');
+      const searchIcon = document.getElementById('mobile-search-icon');
+      const searchInput = document.getElementById('mobile-search-input');
+
+      isMobileSearchOpen = !isMobileSearchOpen;
+
+      if (isMobileSearchOpen) {
+        categoryBar.classList.add('max-w-0', 'opacity-0', 'pointer-events-none');
+        searchWrapper.classList.remove('mobile-search-closed');
+        searchWrapper.classList.add('mobile-search-open');
+        searchIcon.style.transform = 'rotate(90deg)';
+        setTimeout(() => searchInput?.focus(), 150);
+      } else {
+        categoryBar.classList.remove('max-w-0', 'opacity-0', 'pointer-events-none');
+        searchWrapper.classList.remove('mobile-search-open');
+        searchWrapper.classList.add('mobile-search-closed');
+        searchIcon.style.transform = 'rotate(0deg)';
+      }
+    }
+  </script>
+</body>
+</html>
