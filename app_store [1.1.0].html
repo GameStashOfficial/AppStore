@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- App Store - build v1.1.1(@LazyMaster) -->
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
@@ -11,6 +12,7 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
+
     tailwind.config = {
       darkMode: 'class',
       theme: {
@@ -24,6 +26,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: #0a0a0a;
@@ -40,9 +43,7 @@
       -webkit-backdrop-filter: blur(16px);
       z-index: 50;
     }
-    .nav-at-top {
-      background-color: rgba(10, 10, 10, 0.85);
-    }
+    .nav-at-top { background-color: rgba(10, 10, 10, 0.85); }
     .nav-scrolled {
       background-color: rgba(10, 10, 10, 0.65);
       backdrop-filter: blur(28px) saturate(180%);
@@ -83,16 +84,13 @@
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 4px 20px rgba(0, 0, 0, 0.8);
     }
 
-    /* Guys why are looking at my code*/
     .umbrel-card {
       background-color: transparent;
       border: none;
       outline: none;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .umbrel-card:hover {
-      background-color: rgba(38, 40, 42, 0.8);
-    }
+    .umbrel-card:hover { background-color: rgba(38, 40, 42, 0.8); }
 
     .desc-12-lines {
       display: -webkit-box;
@@ -108,7 +106,7 @@
       width: var(--dim);
       height: var(--dim);
       position: relative;
-      animation: spin988 2s linear infinite;
+      animation: spin_loader 2s linear infinite;
     }
 
     .loader .circle {
@@ -127,7 +125,7 @@
     .loader .circle:nth-child(3) { bottom: 0; left: 0; }
     .loader .circle:nth-child(4) { bottom: 0; right: 0; }
 
-    @keyframes spin988 {
+    @keyframes spin_loader {
       0% { transform: scale(1) rotate(0); }
       20%, 25% { transform: scale(1.3) rotate(90deg); }
       45%, 50% { transform: scale(1) rotate(180deg); }
@@ -141,15 +139,14 @@
       border: 4px solid rgba(255, 255, 255, 0.1);
       border-left-color: #ffffff;
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      animation: spin_fast 0.8s linear infinite;
     }
 
-    @keyframes spin {
+    @keyframes spin_fast {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
 
-    /* UWU TOOLTIPS*/
     .tooltip-box { position: relative; }
     .tooltip-bubble {
       position: absolute;
@@ -232,9 +229,7 @@
       outline: none !important;
       -webkit-tap-highlight-color: transparent;
     }
-    .slide-dot-btn .progress-fill {
-      transition: width 0.1s linear;
-    }
+    .slide-dot-btn .progress-fill { transition: width 0.1s linear; }
   </style>
 </head>
 <body class="bg-oled-bg text-gray-100 min-h-screen antialiased selection:bg-white/20 selection:text-white overflow-x-hidden">
@@ -252,7 +247,7 @@
     <div class="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col justify-end h-full">
       
       <div id="top-nav-row" class="flex items-center justify-between h-14 md:h-16 transition-all duration-300 opacity-100 overflow-visible shrink-0">
-        <a href="#home" onclick="showView('home-page-view'); return false;" id="brand-logo" class="flex items-center gap-3 shrink-0 cursor-pointer">
+        <a href="#home" onclick="show_page('home-page-view'); return false;" id="brand-logo" class="flex items-center gap-3 shrink-0 cursor-pointer">
           <img 
             src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/5271ece1e8046937274d6c2e14f9588a58065bd9/Stash%20%5BLOGO%5D.png" 
             alt="Stash OS Logo" 
@@ -262,15 +257,15 @@
         </a>
 
         <div class="relative z-[110]">
-          <form id="search-form" onsubmit="handleSearch(event)" class="relative flex items-center">
+          <form id="search-form" onsubmit="do_search(event)" class="relative flex items-center">
             <div class="relative flex items-center w-56 sm:w-64 md:w-80">
               <input
                 id="search-input"
                 type="text"
                 placeholder="Search store apps..."
                 autocomplete="off"
-                oninput="onSearchInputChange(this.value)"
-                onfocus="onSearchInputChange(this.value)"
+                oninput="on_search_type(this.value)"
+                onfocus="on_search_type(this.value)"
                 class="w-full bg-white/[0.07] hover:bg-white/[0.12] focus:bg-white/[0.14] border border-white/10 text-white placeholder-gray-400 pl-9 md:pl-10 pr-9 md:pr-10 py-2 rounded-full text-xs md:text-sm font-medium outline-none h-9 md:h-10 transition-all"
               />
               <button type="submit" class="absolute left-3 text-gray-400 hover:text-white cursor-pointer">
@@ -280,7 +275,7 @@
               <button 
                 type="button" 
                 id="search-clear-btn" 
-                onclick="clearSearchInput()" 
+                onclick="clear_search_field()" 
                 class="hidden absolute right-3 text-gray-400 hover:text-white text-xs font-bold w-4 h-4 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center cursor-pointer transition-all"
               >
                 ✕
@@ -295,27 +290,27 @@
       <div class="py-2 flex items-center justify-center shrink-0 relative z-10" id="category-nav-wrapper">
         <div class="overflow-x-auto no-scrollbar py-1 max-w-full">
           <nav class="flex items-center justify-center gap-1.5 sm:gap-2 md:gap-3 min-w-max mx-auto px-1 py-0.5" id="category-nav">
-            <button onclick="setCategory('All', this);" class="tab-btn active flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-bold cursor-pointer">
+            <button onclick="filter_cat('All', this);" class="tab-btn active flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-bold cursor-pointer">
               <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Discover.webp" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="All Apps">
               <span>All Apps</span>
             </button>
 
-            <button onclick="setCategory('AI', this);" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
+            <button onclick="filter_cat('AI', this);" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
               <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/AI.png" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="AI">
               <span>AI</span>
             </button>
 
-            <button onclick="setCategory('Game', this);" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
+            <button onclick="filter_cat('Game', this);" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
               <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Media.png" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="Game and Media">
               <span>Game&Media</span>
             </button>
 
-            <button onclick="setCategory('Files & Productivity', this);" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
+            <button onclick="filter_cat('Files & Productivity', this);" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
               <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Files-Productivity.png" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="Files and Productivity">
               <span>Files & Productivity</span>
             </button>
 
-            <button onclick="setCategory('Social', this);" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
+            <button onclick="filter_cat('Social', this);" class="tab-btn inactive flex items-center gap-2 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-semibold cursor-pointer">
               <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Social.png" class="w-4 md:w-5 h-4 md:h-5 object-contain" alt="Social">
               <span>Social</span>
             </button>
@@ -333,46 +328,46 @@
 
   <div class="sm:hidden fixed bottom-4 inset-x-3 z-50 flex items-center justify-between gap-2 bg-neutral-900/85 backdrop-blur-2xl border border-white/15 rounded-full p-2 shadow-[0_12px_40px_rgba(0,0,0,0.8)]">
     <div id="mobile-category-bar" class="flex-1 overflow-x-auto no-scrollbar flex items-center gap-1.5 transition-all duration-300">
-      <button onclick="setCategory('All', this);" class="tab-btn active shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-bold cursor-pointer">
+      <button onclick="filter_cat('All', this);" class="tab-btn active shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-bold cursor-pointer">
         <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Discover.webp" class="w-4 h-4 object-contain" alt="All">
         <span>All</span>
       </button>
 
-      <button onclick="setCategory('AI', this);" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
+      <button onclick="filter_cat('AI', this);" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
         <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/AI.png" class="w-4 h-4 object-contain" alt="AI">
         <span>AI</span>
       </button>
 
-      <button onclick="setCategory('Game', this);" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
+      <button onclick="filter_cat('Game', this);" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
         <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Media.png" class="w-4 h-4 object-contain" alt="Games">
         <span>Games</span>
       </button>
 
-      <button onclick="setCategory('Files & Productivity', this);" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
+      <button onclick="filter_cat('Files & Productivity', this);" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
         <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Files-Productivity.png" class="w-4 h-4 object-contain" alt="Files">
         <span>Files</span>
       </button>
 
-      <button onclick="setCategory('Social', this);" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
+      <button onclick="filter_cat('Social', this);" class="tab-btn inactive shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer">
         <img src="https://raw.githubusercontent.com/andrewrodela447/STASH-STORE/refs/heads/main/IMAGES/Social.png" class="w-4 h-4 object-contain" alt="Social">
         <span>Social</span>
       </button>
     </div>
 
     <div id="mobile-search-wrapper" class="mobile-search-closed flex-1 overflow-hidden transition-all duration-300 ease-out">
-      <form onsubmit="handleSearch(event)" class="relative flex items-center w-full">
+      <form onsubmit="do_search(event)" class="relative flex items-center w-full">
         <input
           id="mobile-search-input"
           type="text"
           placeholder="Search apps..."
-          oninput="onSearchInputChange(this.value)"
+          oninput="on_search_type(this.value)"
           class="w-full bg-white/10 border border-white/20 text-white placeholder-gray-400 pl-8 pr-8 py-2 rounded-full text-xs font-medium outline-none h-9"
         />
         <svg class="w-3.5 h-3.5 text-gray-400 absolute left-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
         <button 
           type="button" 
           id="mobile-search-clear-btn" 
-          onclick="clearSearchInput()" 
+          onclick="clear_search_field()" 
           class="hidden absolute right-2.5 text-gray-400 hover:text-white text-[10px] font-bold w-4 h-4 rounded-full bg-white/10 flex items-center justify-center cursor-pointer"
         >
           ✕
@@ -380,7 +375,7 @@
       </form>
     </div>
 
-    <button id="mobile-search-toggle-btn" onclick="toggleMobileSearch()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 shrink-0 flex items-center justify-center text-white backdrop-blur-xl active:scale-90 transition-all shadow-md cursor-pointer">
+    <button id="mobile-search-toggle-btn" onclick="toggle_mob_search()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 shrink-0 flex items-center justify-center text-white backdrop-blur-xl active:scale-90 transition-all shadow-md cursor-pointer">
       <svg id="mobile-search-icon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
     </button>
   </div>
@@ -411,14 +406,13 @@
       </section>
 
       <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
         <section id="serving-hot-section" class="mb-8 sm:mb-12 md:mb-14">
           <div class="flex items-center justify-between mb-3 sm:mb-5 md:mb-6">
             <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-white tracking-tight">Serving hot now</h2>
           </div>
           <div id="serving-hot-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-2.5 sm:gap-4 md:gap-5"></div>
         </section>
-
 
         <section id="slideshow-section" class="mb-10 sm:mb-14 w-full overflow-hidden">
           <div id="slideshow-track" class="flex overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory py-2 cursor-grab active:cursor-grabbing w-full gap-3 sm:gap-4">
@@ -445,10 +439,10 @@
           <div class="flex items-center justify-between mt-3 sm:mt-5 md:mt-7 px-1">
             <div class="flex items-center gap-2.5 sm:gap-3.5 md:gap-4 px-4 py-2 sm:px-6 sm:py-3 md:px-7 md:py-4 rounded-full bg-white/[0.08] border border-white/15 backdrop-blur-lg" id="dots-container"></div>
             <div class="flex items-center gap-2 sm:gap-3 md:gap-4">
-              <button onclick="prevSlide()" class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-white/[0.09] hover:bg-white/[0.18] border border-white/15 text-white flex items-center justify-center active:scale-90 cursor-pointer backdrop-blur-lg transition-transform">
+              <button onclick="slide_prev()" class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-white/[0.09] hover:bg-white/[0.18] border border-white/15 text-white flex items-center justify-center active:scale-90 cursor-pointer backdrop-blur-lg transition-transform">
                 <svg class="w-4 sm:w-5 h-4 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
               </button>
-              <button onclick="nextSlide()" class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-white/[0.09] hover:bg-white/[0.18] border border-white/15 text-white flex items-center justify-center active:scale-90 cursor-pointer backdrop-blur-lg transition-transform">
+              <button onclick="slide_next()" class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-white/[0.09] hover:bg-white/[0.18] border border-white/15 text-white flex items-center justify-center active:scale-90 cursor-pointer backdrop-blur-lg transition-transform">
                 <svg class="w-4 sm:w-5 h-4 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
               </button>
             </div>
@@ -464,7 +458,7 @@
 
             <div class="flex items-center gap-2 sm:gap-3 shrink-0 mt-2 sm:mt-0">
               <span class="text-xs font-semibold text-gray-400">Sort by:</span>
-              <select id="sort-select" onchange="handleSortChange(this.value)" class="bg-white/[0.07] hover:bg-white/[0.12] border border-white/10 text-white text-xs font-bold rounded-full px-3 py-1.5 sm:px-3.5 sm:py-2 outline-none cursor-pointer">
+              <select id="sort-select" onchange="change_sort(this.value)" class="bg-white/[0.07] hover:bg-white/[0.12] border border-white/10 text-white text-xs font-bold rounded-full px-3 py-1.5 sm:px-3.5 sm:py-2 outline-none cursor-pointer">
                 <option value="alphabetical" class="bg-neutral-900 text-white">Alphabetical (A-Z)</option>
                 <option value="downloads" class="bg-neutral-900 text-white">Most Downloaded</option>
                 <option value="likes" class="bg-neutral-900 text-white">Most Liked</option>
@@ -498,7 +492,7 @@
           <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">Search Results</h1>
           <p class="text-xs sm:text-sm text-gray-400 mt-1">Showing matches for "<span id="search-query-display" class="text-white font-semibold"></span>"</p>
         </div>
-        <button onclick="window.location.hash = 'home'; showView('home-page-view');" class="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs font-bold cursor-pointer transition-all active:scale-95">
+        <button onclick="window.location.hash = 'home'; show_page('home-page-view');" class="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs font-bold cursor-pointer transition-all active:scale-95">
           ✕ Close
         </button>
       </div>
@@ -539,7 +533,7 @@
               <div class="tooltip-box shrink-0">
                 <button 
                   id="detail-btn-download"
-                  onclick="downloadCurrentApp()"
+                  onclick="dl_current_app()"
                   class="w-12 h-12 sm:w-14 sm:h-14 rounded-[18px] sm:rounded-[22px] bg-white/10 hover:bg-white/20 border border-white/15 text-white flex items-center justify-center transition-all active:scale-95 cursor-pointer shadow-[0_4px_24px_rgba(0,0,0,0.3)]"
                 >
                   <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
@@ -550,7 +544,7 @@
               <div class="tooltip-box flex-1">
                 <button 
                   id="detail-btn-play"
-                  onclick="launchAppPlayer()"
+                  onclick="launch_player()"
                   class="w-full h-12 sm:h-14 rounded-[18px] sm:rounded-[22px] bg-white text-black font-extrabold text-xs sm:text-sm md:text-base hover:bg-gray-200 transition-all active:scale-95 shadow-[0_4px_24px_rgba(255,255,255,0.15)] flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <svg class="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -577,7 +571,7 @@
               <p id="detail-desc-content" class="text-xs sm:text-sm md:text-base text-gray-300 leading-relaxed font-normal space-y-3 whitespace-pre-line"></p>
             </div>
             <div class="mt-3">
-              <button id="detail-desc-btn" onclick="toggleDescription()" class="hidden text-xs font-bold text-white hover:text-purple-300 transition-colors cursor-pointer">Read more</button>
+              <button id="detail-desc-btn" onclick="toggle_desc_full()" class="hidden text-xs font-bold text-white hover:text-purple-300 transition-colors cursor-pointer">Read more</button>
             </div>
           </div>
           <div class="lg:col-span-5 bg-transparent">
@@ -596,14 +590,15 @@
       </main>
     </div>
 
+
     <div id="app-player-view" class="fixed inset-0 z-[200] bg-black flex flex-col hidden">
         
       <header id="player-topnav" class="h-14 sm:h-16 bg-neutral-900/90 backdrop-blur-xl border-b border-white/10 px-4 sm:px-6 flex items-center justify-between shrink-0 z-50 transition-all duration-300">
-          
+        
         <div class="flex items-center gap-3 sm:gap-4 min-w-0">
           <div class="tooltip-box">
             <button 
-              onclick="closeAppPlayer()" 
+              onclick="exit_player_mode()" 
               class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white flex items-center justify-center transition-all active:scale-95 cursor-pointer"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -617,7 +612,7 @@
         <div class="flex items-center gap-2 sm:gap-3 shrink-0">
           <div class="tooltip-box">
             <button 
-              onclick="openInNewTab()" 
+              onclick="open_external_tab()" 
               class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white flex items-center justify-center transition-all active:scale-95 cursor-pointer"
             >
               <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
@@ -627,7 +622,7 @@
 
           <div class="tooltip-box">
             <button 
-              onclick="downloadCurrentApp()" 
+              onclick="dl_current_app()" 
               class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white flex items-center justify-center transition-all active:scale-95 cursor-pointer"
             >
               <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
@@ -637,7 +632,7 @@
 
           <div class="tooltip-box">
             <button 
-              onclick="togglePlayerFullscreen()" 
+              onclick="toggle_fs()" 
               class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white flex items-center justify-center transition-all active:scale-95 cursor-pointer"
             >
               <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
@@ -659,21 +654,29 @@
     </div>
 
   </div>
+<script>
+    //App Store - Long ahh script
+    const SB_URL = 'https://ajwgubxrevbipsvwabnb.supabase.co';
+    const SB_KEY = 'sb_publishable_yc6QGTvxDWFULjJgqSv6_g_4E1__TIa';
+    
+    let db = null;
+    try {
+      if (window.supabase) {
+        db = window.supabase.createClient(SB_URL, SB_KEY);
+      }
+    } catch (err) {
+      console.warn("Supabase load failed, falling back to local memory:", err);
+    }
 
-  <script>
-    const SUPABASE_URL = 'https://ajwgubxrevbipsvwabnb.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_yc6QGTvxDWFULjJgqSv6_g_4E1__TIa';
-    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+    let apps = [];
+    let sorted_apps = [];
+    let visible_count = 10;
+    let active_app = null;
+    let slide_idx = 0;
+    let timer_id = null;
+    const CAROUSEL_SPEED = 5000;
 
-    let storeApps = [];
-    let currentSortedApps = [];
-    let displayedCount = 10;
-    let currentDetailedApp = null;
-    let currentSlideIndex = 0;
-    let slideTimer = null;
-    const SLIDE_DURATION = 5000;
-
-    const loadingTips = [
+    const splash_tips = [
       "Getting your proxy ready",
       "Did you know Stash OS real name is Game Stash",
       "Why is this taking for ever🙄",
@@ -687,83 +690,91 @@
       "Getting your proxy ready"
     ];
 
-    function handleHashRouter() {
-      const hash = window.location.hash.replace('#', '') || 'home';
+    function router() {
+      const path = window.location.hash.replace('#', '') || 'home';
       
-      if (hash.startsWith('app/')) {
-        const appId = hash.split('/')[1];
-        openAppDetails(appId, false);
-      } else if (hash.startsWith('play/')) {
-        const appId = hash.split('/')[1];
-        const app = storeApps.find(a => String(a.id) === String(appId));
-        if (app) {
-          currentDetailedApp = app;
-          launchAppPlayer(false);
+      if (path.indexOf('app/') === 0) {
+        const target_id = path.split('/')[1];
+        view_app(target_id, false);
+      } else if (path.indexOf('play/') === 0) {
+        const play_id = path.split('/')[1];
+        const match = apps.find(function(item) { return String(item.id) === String(play_id); });
+        if (match) {
+          active_app = match;
+          launch_player(false);
         } else {
-          showView('home-page-view');
+          show_page('home-page-view');
         }
-      } else if (hash.startsWith('category/')) {
-        const categoryName = decodeURIComponent(hash.split('/')[1]);
-        setCategory(categoryName, null, false);
-      } else if (hash.startsWith('search/')) {
-        const query = decodeURIComponent(hash.split('/')[1]);
-        executeSearch(query, false);
+      } else if (path.indexOf('category/') === 0) {
+        const cat_name = decodeURIComponent(path.split('/')[1]);
+        filter_cat(cat_name, null, false);
+      } else if (path.indexOf('search/') === 0) {
+        const q = decodeURIComponent(path.split('/')[1]);
+        run_search(q, false);
       } else {
-        showView('home-page-view');
+        show_page('home-page-view');
       }
     }
 
-    function showView(viewId) {
+    function show_page(page_id) {
       const views = ['home-page-view', 'search-page-view', 'app-details-view', 'app-player-view'];
-      const storeNavbar = document.getElementById('navbar');
-      const mobileDock = document.querySelector('.sm\\:hidden.fixed.bottom-4');
+      const top_nav = document.getElementById('navbar');
+      const bot_nav = document.querySelector('.sm\\:hidden.fixed.bottom-4');
 
-      views.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          if (id === viewId) el.classList.remove('hidden');
-          else el.classList.add('hidden');
+      for (let i = 0; i < views.length; i++) {
+        const v = document.getElementById(views[i]);
+        if (v) {
+          if (views[i] === page_id) {
+            v.classList.remove('hidden');
+          } else {
+            v.classList.add('hidden');
+          }
         }
-      });
+      }
 
-      if (viewId === 'app-player-view') {
-        if (storeNavbar) storeNavbar.classList.add('hidden');
-        if (mobileDock) mobileDock.classList.add('hidden');
+      if (page_id === 'app-player-view') {
+        if (top_nav) top_nav.classList.add('hidden');
+        if (bot_nav) bot_nav.classList.add('hidden');
       } else {
-        if (storeNavbar) storeNavbar.classList.remove('hidden');
-        if (mobileDock) mobileDock.classList.remove('hidden');
+        if (top_nav) top_nav.classList.remove('hidden');
+        if (bot_nav) bot_nav.classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'instant' });
       }
     }
 
-    function dismissLoader() {
+    function hide_startup_loader() {
       document.body.style.overflow = '';
-      const overlay = document.getElementById('startup-overlay');
-      if (overlay) {
-        overlay.classList.add('opacity-0', 'pointer-events-none');
-        setTimeout(() => overlay.remove(), 300);
+      const splash = document.getElementById('startup-overlay');
+      if (splash) {
+        splash.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(function() { splash.remove(); }, 300);
       }
     }
 
-    async function initApp() {
-      if (supabaseClient) {
+    async function init_app() {
+      if (db) {
         try {
-          const { data, error } = await supabaseClient.from('apps').select('*');
-          if (!error && data) storeApps = data;
-        } catch (err) {
-          console.error('Data fetch error:', err);
+          const res = await db.from('apps').select('*');
+          if (!res.error && res.data) {
+            apps = res.data;
+          } else {
+            console.warn("DB error or empty response:", res.error);
+          }
+        } catch (e) {
+          console.error("Failed to fetch apps table:", e);
         }
       }
-      currentSortedApps = [...storeApps];
-      renderServingHotNow();
-      handleSortChange('alphabetical');
-      initSlideshowDots();
-      handleHashRouter();
+      
+      sorted_apps = [...apps];
+      render_hot_section();
+      change_sort('alphabetical');
+      setup_dots();
+      router();
     }
 
-    function generateAppCardHTML(app) {
+    function build_card(app) {
       return `
-        <div onclick="openAppDetails('${app.id}')" class="group umbrel-card flex items-center gap-3 sm:gap-4 p-3 sm:p-3.5 rounded-[20px] sm:rounded-[24px] cursor-pointer hover:scale-[1.01] active:scale-[0.98] transition-all duration-200">
+        <div onclick="view_app('${app.id}')" class="group umbrel-card flex items-center gap-3 sm:gap-4 p-3 sm:p-3.5 rounded-[20px] sm:rounded-[24px] cursor-pointer hover:scale-[1.01] active:scale-[0.98] transition-all duration-200">
           <div class="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-[18px] sm:rounded-[22px] overflow-hidden shrink-0 transition-transform duration-300 group-hover:scale-105 shadow-lg bg-white/5 relative">
             <img src="${app.img || ''}" loading="lazy" class="w-full h-full object-cover" alt="${app.name || 'App'}" />
           </div>
@@ -778,11 +789,12 @@
       `;
     }
 
-    function setCategory(cat, element, updateHash = true) {
-      if (updateHash) window.location.hash = `category/${encodeURIComponent(cat)}`;
+    function filter_cat(cat_name, btn_el, update_url = true) {
+      if (update_url) window.location.hash = `category/${encodeURIComponent(cat_name)}`;
 
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        if (btn.textContent.toLowerCase().includes(cat.toLowerCase())) {
+      const tabs = document.querySelectorAll('.tab-btn');
+      tabs.forEach(function(btn) {
+        if (btn.textContent.toLowerCase().includes(cat_name.toLowerCase())) {
           btn.classList.remove('inactive');
           btn.classList.add('active');
         } else {
@@ -791,174 +803,197 @@
         }
       });
 
-      const banner = document.getElementById('hero-banner-section');
-      const slideshow = document.getElementById('slideshow-section');
-      const hotNow = document.getElementById('serving-hot-section');
-      const grid = document.getElementById('all-apps-grid');
-      const categoryLoader = document.getElementById('category-loader');
+      const hero = document.getElementById('hero-banner-section');
+      const slider = document.getElementById('slideshow-section');
+      const hot_sec = document.getElementById('serving-hot-section');
+      const app_grid = document.getElementById('all-apps-grid');
+      const loader_sp = document.getElementById('category-loader');
 
-      if (grid) grid.classList.add('hidden');
-      if (categoryLoader) categoryLoader.classList.remove('hidden');
+      if (app_grid) app_grid.classList.add('hidden');
+      if (loader_sp) loader_sp.classList.remove('hidden');
 
-      showView('home-page-view');
+      show_page('home-page-view');
 
-      setTimeout(() => {
-        if (cat === 'All') {
-          if (banner) banner.classList.remove('hidden');
-          if (slideshow) slideshow.classList.remove('hidden');
-          if (hotNow) hotNow.classList.remove('hidden');
+      setTimeout(function() {
+        if (cat_name === 'All') {
+          if (hero) hero.classList.remove('hidden');
+          if (slider) slider.classList.remove('hidden');
+          if (hot_sec) hot_sec.classList.remove('hidden');
         } else {
-          if (banner) banner.classList.add('hidden');
-          if (slideshow) slideshow.classList.add('hidden');
-          if (hotNow) hotNow.classList.add('hidden');
+          if (hero) hero.classList.add('hidden');
+          if (slider) slider.classList.add('hidden');
+          if (hot_sec) hot_sec.classList.add('hidden');
         }
 
-        currentSortedApps = cat === 'All' ? [...storeApps] : storeApps.filter(a => a.category && a.category.toLowerCase().includes(cat.toLowerCase()));
-        const titleEl = document.getElementById('home-grid-title');
-        if (titleEl) titleEl.innerText = cat === 'All' ? 'All apps' : `${cat} Apps`;
-        displayedCount = 10;
+        if (cat_name === 'All') {
+          sorted_apps = [...apps];
+        } else {
+          sorted_apps = apps.filter(function(item) {
+            return item.category && item.category.toLowerCase().includes(cat_name.toLowerCase());
+          });
+        }
+
+        const title = document.getElementById('home-grid-title');
+        if (title) title.innerText = cat_name === 'All' ? 'All apps' : `${cat_name} Apps`;
+        visible_count = 10;
         
-        if (categoryLoader) categoryLoader.classList.add('hidden');
-        if (grid) grid.classList.remove('hidden');
-        renderAllAppsGrid();
-      }, 300);
+        if (loader_sp) loader_sp.classList.add('hidden');
+        if (app_grid) app_grid.classList.remove('hidden');
+        render_grid();
+      }, 250);
     }
 
-    function renderServingHotNow() {
-      const grid = document.getElementById('serving-hot-grid');
-      if (!grid) return;
-      if (storeApps.length === 0) {
-        grid.innerHTML = '<p class="text-xs text-gray-500 col-span-full py-4 text-center">No apps currently available.</p>';
+    function render_hot_section() {
+      const container = document.getElementById('serving-hot-grid');
+      if (!container) return;
+      if (apps.length === 0) {
+        container.innerHTML = '<p class="text-xs text-gray-500 col-span-full py-4 text-center">No apps currently available.</p>';
         return;
       }
-      const top7 = [...storeApps].sort((a, b) => (b.downloads || 0) - (a.downloads || 0)).slice(0, 7);
-      grid.innerHTML = top7.map(app => `
-        <div onclick="openAppDetails('${app.id}')" class="flex flex-col items-center cursor-pointer group">
-          <div class="w-full aspect-square rounded-[18px] sm:rounded-[24px] overflow-hidden shrink-0 shadow-md group-hover:scale-105 transition-transform duration-200 bg-white/5">
-            <img src="${app.img || ''}" loading="lazy" class="w-full h-full object-cover" alt="${app.name || ''}">
+      
+      const top_items = [...apps].sort(function(a, b) {
+        return (b.downloads || 0) - (a.downloads || 0);
+      }).slice(0, 7);
+
+      container.innerHTML = top_items.map(function(app) {
+        return `
+          <div onclick="view_app('${app.id}')" class="flex flex-col items-center cursor-pointer group">
+            <div class="w-full aspect-square rounded-[18px] sm:rounded-[24px] overflow-hidden shrink-0 shadow-md group-hover:scale-105 transition-transform duration-200 bg-white/5">
+              <img src="${app.img || ''}" loading="lazy" class="w-full h-full object-cover" alt="${app.name || ''}">
+            </div>
+            <div class="mt-2 text-center w-full px-1">
+              <h3 class="font-bold text-[11px] sm:text-xs md:text-sm text-white truncate group-hover:text-purple-300 transition-colors">${app.name || ''}</h3>
+              <p class="text-[10px] sm:text-[11px] text-gray-400 font-medium mt-0.5">${app.category || 'App'}</p>
+            </div>
           </div>
-          <div class="mt-2 text-center w-full px-1">
-            <h3 class="font-bold text-[11px] sm:text-xs md:text-sm text-white truncate group-hover:text-purple-300 transition-colors">${app.name || ''}</h3>
-            <p class="text-[10px] sm:text-[11px] text-gray-400 font-medium mt-0.5">${app.category || 'App'}</p>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
-    function renderAllAppsGrid() {
+    function render_grid() {
       const grid = document.getElementById('all-apps-grid');
-      const endText = document.getElementById('end-feed-text');
+      const end_msg = document.getElementById('end-feed-text');
       if (!grid) return;
-      if (currentSortedApps.length === 0) {
+      
+      if (sorted_apps.length === 0) {
         grid.innerHTML = '<p class="text-xs text-gray-500 col-span-full py-8 text-center">No apps found for this category.</p>';
-        if (endText) endText.classList.add('hidden');
+        if (end_msg) end_msg.classList.add('hidden');
         return;
       }
-      grid.innerHTML = currentSortedApps.slice(0, displayedCount).map(generateAppCardHTML).join('');
-      if (endText) {
-        if (displayedCount >= currentSortedApps.length) endText.classList.remove('hidden');
-        else endText.classList.add('hidden');
+
+      grid.innerHTML = sorted_apps.slice(0, visible_count).map(build_card).join('');
+      if (end_msg) {
+        if (visible_count >= sorted_apps.length) {
+          end_msg.classList.remove('hidden');
+        } else {
+          end_msg.classList.add('hidden');
+        }
       }
     }
 
-    function handleSortChange(sortType) {
-      currentSortedApps = [...storeApps];
-      if (sortType === 'alphabetical') {
-        currentSortedApps.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
-      } else if (sortType === 'downloads') {
-        currentSortedApps.sort((a, b) => (b.downloads || 0) - (a.downloads || 0));
-      } else if (sortType === 'likes') {
-        currentSortedApps.sort((a, b) => (b.likes || 0) - (a.likes || 0));
-      } else if (sortType === 'newest') {
-        currentSortedApps.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+    function change_sort(mode) {
+      sorted_apps = [...apps];
+      if (mode === 'alphabetical') {
+        sorted_apps.sort(function(a, b) { return (a.name || '').localeCompare(b.name || ''); });
+      } else if (mode === 'downloads') {
+        sorted_apps.sort(function(a, b) { return (b.downloads || 0) - (a.downloads || 0); });
+      } else if (mode === 'likes') {
+        sorted_apps.sort(function(a, b) { return (b.likes || 0) - (a.likes || 0); });
+      } else if (mode === 'newest') {
+        sorted_apps.sort(function(a, b) { return new Date(b.created_at || 0) - new Date(a.created_at || 0); });
       }
-      displayedCount = 10;
-      renderAllAppsGrid();
+      visible_count = 10;
+      render_grid();
     }
 
-    window.addEventListener('scroll', () => {
-      const navbar = document.getElementById('navbar');
-      const topNavRow = document.getElementById('top-nav-row');
-      const heroImg = document.getElementById('hero-banner-img');
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('navbar');
+      const top_row = document.getElementById('top-nav-row');
+      const banner_bg = document.getElementById('hero-banner-img');
 
       if (window.scrollY > 20) {
-        if (topNavRow) {
-          topNavRow.style.maxHeight = '0px';
-          topNavRow.style.opacity = '0';
-          topNavRow.style.pointerEvents = 'none';
-          topNavRow.style.margin = '0';
+        if (top_row) {
+          top_row.style.maxHeight = '0px';
+          top_row.style.opacity = '0';
+          top_row.style.pointerEvents = 'none';
+          top_row.style.margin = '0';
         }
-        if (navbar) {
-          navbar.classList.remove('nav-at-top');
-          navbar.classList.add('nav-scrolled');
+        if (header) {
+          header.classList.remove('nav-at-top');
+          header.classList.add('nav-scrolled');
         }
       } else {
-        if (topNavRow) {
-          topNavRow.style.maxHeight = '64px';
-          topNavRow.style.opacity = '1';
-          topNavRow.style.pointerEvents = 'auto';
-          topNavRow.style.margin = '';
+        if (top_row) {
+          top_row.style.maxHeight = '64px';
+          top_row.style.opacity = '1';
+          top_row.style.pointerEvents = 'auto';
+          top_row.style.margin = '';
         }
-        if (navbar) {
-          navbar.classList.remove('nav-scrolled');
-          navbar.classList.add('nav-at-top');
+        if (header) {
+          header.classList.remove('nav-scrolled');
+          header.classList.add('nav-at-top');
         }
       }
 
-      if (heroImg && document.getElementById('home-page-view') && !document.getElementById('home-page-view').classList.contains('hidden')) {
-        heroImg.style.transform = `scale(${Math.max(1.0, 1.15 - (window.scrollY / 1200))})`;
+      if (banner_bg && document.getElementById('home-page-view') && !document.getElementById('home-page-view').classList.contains('hidden')) {
+        banner_bg.style.transform = `scale(${Math.max(1.0, 1.15 - (window.scrollY / 1200))})`;
       }
 
-      const homeView = document.getElementById('home-page-view');
-      if (homeView && !homeView.classList.contains('hidden')) {
+      const main_view = document.getElementById('home-page-view');
+      if (main_view && !main_view.classList.contains('hidden')) {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 220) {
-          if (displayedCount < currentSortedApps.length) {
-            displayedCount += 10;
-            renderAllAppsGrid();
+          if (visible_count < sorted_apps.length) {
+            visible_count += 10;
+            render_grid();
           }
         }
       }
     });
 
-    function initSlideshowDots() {
+    function setup_dots() {
       const track = document.getElementById('slideshow-track');
-      const dotsContainer = document.getElementById('dots-container');
-      if (!track || !dotsContainer) return;
-      const cards = track.querySelectorAll('.carousel-card');
-      if (cards.length > 0) {
-        dotsContainer.innerHTML = Array.from(cards).map((_, i) => `
-          <button onclick="manualSlideSelect(${i})" class="slide-dot-btn relative h-2 sm:h-2.5 rounded-full bg-white/20 overflow-hidden transition-all duration-300 cursor-pointer ${i === 0 ? 'w-8 sm:w-10 active-dot' : 'w-2 sm:w-2.5'}">
-            <div class="progress-fill absolute inset-y-0 left-0 bg-white rounded-full w-0"></div>
-          </button>
-        `).join('');
+      const dots_wrap = document.getElementById('dots-container');
+      if (!track || !dots_wrap) return;
+
+      const items = track.querySelectorAll('.carousel-card');
+      if (items.length > 0) {
+        dots_wrap.innerHTML = Array.from(items).map(function(_, i) {
+          return `
+            <button onclick="goto_slide(${i})" class="slide-dot-btn relative h-2 sm:h-2.5 rounded-full bg-white/20 overflow-hidden transition-all duration-300 cursor-pointer ${i === 0 ? 'w-8 sm:w-10 active-dot' : 'w-2 sm:w-2.5'}">
+              <div class="progress-fill absolute inset-y-0 left-0 bg-white rounded-full w-0"></div>
+            </button>
+          `;
+        }).join('');
       }
-      resetSlideTimer();
+      restart_carousel_timer();
     }
 
-    function resetSlideTimer() {
-      clearInterval(slideTimer);
-      const activeFill = document.querySelector('.slide-dot-btn.active-dot .progress-fill');
-      if (activeFill) {
-        activeFill.style.transition = 'none';
-        activeFill.style.width = '0%';
-        setTimeout(() => {
-          activeFill.style.transition = `width ${SLIDE_DURATION}ms linear`;
-          activeFill.style.width = '100%';
+    function restart_carousel_timer() {
+      clearInterval(timer_id);
+      const active_bar = document.querySelector('.slide-dot-btn.active-dot .progress-fill');
+      if (active_bar) {
+        active_bar.style.transition = 'none';
+        active_bar.style.width = '0%';
+        setTimeout(function() {
+          active_bar.style.transition = `width ${CAROUSEL_SPEED}ms linear`;
+          active_bar.style.width = '100%';
         }, 50);
       }
-      slideTimer = setInterval(nextSlide, SLIDE_DURATION);
+      timer_id = setInterval(slide_next, CAROUSEL_SPEED);
     }
 
-    function scrollToSlide(index) {
+    function scroll_to_slide(idx) {
       const track = document.getElementById('slideshow-track');
       if (!track) return;
       const cards = track.querySelectorAll('.carousel-card');
       if (!cards.length) return;
-      currentSlideIndex = (index + cards.length) % cards.length;
-      track.scrollTo({ left: cards[currentSlideIndex].offsetLeft - track.offsetLeft, behavior: 'smooth' });
-      document.querySelectorAll('.slide-dot-btn').forEach((dot, idx) => {
+
+      slide_idx = (idx + cards.length) % cards.length;
+      track.scrollTo({ left: cards[slide_idx].offsetLeft - track.offsetLeft, behavior: 'smooth' });
+
+      document.querySelectorAll('.slide-dot-btn').forEach(function(dot, i) {
         const fill = dot.querySelector('.progress-fill');
-        if (idx === currentSlideIndex) {
+        if (i === slide_idx) {
           dot.className = 'slide-dot-btn active-dot relative h-2 sm:h-2.5 rounded-full bg-white/20 overflow-hidden transition-all duration-300 cursor-pointer w-8 sm:w-10';
           if (fill) fill.style.width = '0%';
         } else {
@@ -968,344 +1003,369 @@
       });
     }
 
-    function manualSlideSelect(i) { scrollToSlide(i); resetSlideTimer(); }
-    function nextSlide() { scrollToSlide(currentSlideIndex + 1); resetSlideTimer(); }
-    function prevSlide() { scrollToSlide(currentSlideIndex - 1); resetSlideTimer(); }
+    function goto_slide(i) { scroll_to_slide(i); restart_carousel_timer(); }
+    function slide_next() { scroll_to_slide(slide_idx + 1); restart_carousel_timer(); }
+    function slide_prev() { scroll_to_slide(slide_idx - 1); restart_carousel_timer(); }
 
-    function onSearchInputChange(value) {
-      const desktopClear = document.getElementById('search-clear-btn');
-      const mobileClear = document.getElementById('mobile-search-clear-btn');
+    function on_search_type(val) {
+      const desktop_clear = document.getElementById('search-clear-btn');
+      const mobile_clear = document.getElementById('mobile-search-clear-btn');
 
-      if (value.trim().length > 0) {
-        if (desktopClear) desktopClear.classList.remove('hidden');
-        if (mobileClear) mobileClear.classList.remove('hidden');
-        handleSearchSuggestions(value);
+      if (val.trim().length > 0) {
+        if (desktop_clear) desktop_clear.classList.remove('hidden');
+        if (mobile_clear) mobile_clear.classList.remove('hidden');
+        render_search_popup(val);
       } else {
-        if (desktopClear) desktopClear.classList.add('hidden');
-        if (mobileClear) mobileClear.classList.add('hidden');
-        hideSearchSuggestions();
+        if (desktop_clear) desktop_clear.classList.add('hidden');
+        if (mobile_clear) mobile_clear.classList.add('hidden');
+        close_search_popup();
       }
     }
 
-    function clearSearchInput() {
-      const desktopInput = document.getElementById('search-input');
-      const mobileInput = document.getElementById('mobile-search-input');
-      const desktopClear = document.getElementById('search-clear-btn');
-      const mobileClear = document.getElementById('mobile-search-clear-btn');
+    function clear_search_field() {
+      const d_input = document.getElementById('search-input');
+      const m_input = document.getElementById('mobile-search-input');
+      const d_clear = document.getElementById('search-clear-btn');
+      const m_clear = document.getElementById('mobile-search-clear-btn');
 
-      if (desktopInput) desktopInput.value = '';
-      if (mobileInput) mobileInput.value = '';
-      if (desktopClear) desktopClear.classList.add('hidden');
-      if (mobileClear) mobileClear.classList.add('hidden');
-      hideSearchSuggestions();
+      if (d_input) d_input.value = '';
+      if (m_input) m_input.value = '';
+      if (d_clear) d_clear.classList.add('hidden');
+      if (m_clear) m_clear.classList.add('hidden');
+      close_search_popup();
     }
 
-    function handleSearchSuggestions(query) {
+    function render_search_popup(txt) {
       const popup = document.getElementById('search-suggestions');
       if (!popup) return;
-      const clean = query.toLowerCase().trim();
-      if (!clean) {
+      const clean_query = txt.toLowerCase().trim();
+      
+      if (!clean_query) {
         popup.classList.add('hidden');
         popup.innerHTML = '';
         return;
       }
-      const matches = storeApps.filter(app => (app.name && app.name.toLowerCase().includes(clean)) || (app.category && app.category.toLowerCase().includes(clean))).slice(0, 5);
+
+      const matches = apps.filter(function(item) {
+        return (item.name && item.name.toLowerCase().includes(clean_query)) || 
+               (item.category && item.category.toLowerCase().includes(clean_query));
+      }).slice(0, 5);
+
       if (matches.length === 0) {
         popup.classList.add('hidden');
         popup.innerHTML = '';
         return;
       }
-      popup.innerHTML = matches.map(app => `
-        <div onclick="openAppDetails('${app.id}'); hideSearchSuggestions();" class="flex items-center gap-3 p-2 hover:bg-white/10 rounded-xl cursor-pointer transition-colors">
-          <img src="${app.img || ''}" loading="lazy" class="w-8 h-8 rounded-lg object-cover bg-white/5 shrink-0" />
-          <div class="min-w-0 flex-1">
-            <h4 class="text-xs font-bold text-white truncate">${app.name || ''}</h4>
-            <p class="text-[10px] text-gray-400 font-medium">${app.category || 'App'}</p>
+
+      popup.innerHTML = matches.map(function(item) {
+        return `
+          <div onclick="view_app('${item.id}'); close_search_popup();" class="flex items-center gap-3 p-2 hover:bg-white/10 rounded-xl cursor-pointer transition-colors">
+            <img src="${item.img || ''}" loading="lazy" class="w-8 h-8 rounded-lg object-cover bg-white/5 shrink-0" />
+            <div class="min-w-0 flex-1">
+              <h4 class="text-xs font-bold text-white truncate">${item.name || ''}</h4>
+              <p class="text-[10px] text-gray-400 font-medium">${item.category || 'App'}</p>
+            </div>
           </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
       popup.classList.remove('hidden');
     }
 
-    function hideSearchSuggestions() {
+    function close_search_popup() {
       const popup = document.getElementById('search-suggestions');
       if (popup) popup.classList.add('hidden');
     }
 
-    function handleSearch(e) {
+    function do_search(e) {
       if (e) e.preventDefault();
-      const desktopInput = document.getElementById('search-input');
-      const mobileInput = document.getElementById('mobile-search-input');
-      const query = ((desktopInput && desktopInput.value) || (mobileInput && mobileInput.value) || '').toLowerCase().trim();
-      if (!query) return;
-      executeSearch(query, true);
+      const d_input = document.getElementById('search-input');
+      const m_input = document.getElementById('mobile-search-input');
+      const query_str = ((d_input && d_input.value) || (m_input && m_input.value) || '').toLowerCase().trim();
+      
+      if (!query_str) return;
+      run_search(query_str, true);
     }
 
-    function executeSearch(query, updateHash = true) {
-      hideSearchSuggestions();
-      if (updateHash) window.location.hash = `search/${encodeURIComponent(query)}`;
+    function run_search(query_str, update_hash = true) {
+      close_search_popup();
+      if (update_hash) window.location.hash = `search/${encodeURIComponent(query_str)}`;
 
-      const queryDisplay = document.getElementById('search-query-display');
-      if (queryDisplay) queryDisplay.innerText = query;
+      const label = document.getElementById('search-query-display');
+      if (label) label.innerText = query_str;
 
       const grid = document.getElementById('search-results-grid');
-      const emptyState = document.getElementById('search-empty-state');
+      const empty = document.getElementById('search-empty-state');
       const loader = document.getElementById('search-loader');
 
       if (grid) grid.classList.add('hidden');
-      if (emptyState) emptyState.classList.add('hidden');
+      if (empty) empty.classList.add('hidden');
       if (loader) loader.classList.remove('hidden');
 
-      showView('search-page-view');
+      show_page('search-page-view');
 
-      setTimeout(() => {
-        const results = storeApps.filter(a => (a.name && a.name.toLowerCase().includes(query)) || (a.category && a.category.toLowerCase().includes(query)) || (a.description && a.description.toLowerCase().includes(query)));
+      setTimeout(function() {
+        const found = apps.filter(function(a) {
+          return (a.name && a.name.toLowerCase().includes(query_str)) || 
+                 (a.category && a.category.toLowerCase().includes(query_str)) || 
+                 (a.description && a.description.toLowerCase().includes(query_str));
+        });
+
         if (loader) loader.classList.add('hidden');
 
-        if (results.length > 0) {
+        if (found.length > 0) {
           if (grid) {
-            grid.innerHTML = results.map(generateAppCardHTML).join('');
+            grid.innerHTML = found.map(build_card).join('');
             grid.classList.remove('hidden');
           }
-          if (emptyState) emptyState.classList.add('hidden');
+          if (empty) empty.classList.add('hidden');
         } else {
           if (grid) {
             grid.innerHTML = '';
             grid.classList.add('hidden');
           }
-          if (emptyState) emptyState.classList.remove('hidden');
+          if (empty) empty.classList.remove('hidden');
         }
-      }, 300);
+      }, 250);
     }
 
-    async function openAppDetails(appId, updateHash = true) {
-      const app = storeApps.find(a => String(a.id) === String(appId));
-      if (!app) return;
-      currentDetailedApp = app;
+    async function view_app(app_id, update_hash = true) {
+      const item = apps.find(function(a) { return String(a.id) === String(app_id); });
+      if (!item) return;
+      active_app = item;
 
-      if (updateHash) window.location.hash = `app/${app.id}`;
+      if (update_hash) window.location.hash = `app/${item.id}`;
 
-      const detailImg = document.getElementById('detail-app-img');
-      if (detailImg) detailImg.src = app.img || '';
-      const detailTitle = document.getElementById('detail-app-title');
-      if (detailTitle) detailTitle.textContent = app.name || '';
+      const icon = document.getElementById('detail-app-img');
+      if (icon) icon.src = item.img || '';
+      const title = document.getElementById('detail-app-title');
+      if (title) title.textContent = item.name || '';
       
-      const statDl = document.getElementById('detail-stat-downloads');
-      if (statDl) statDl.textContent = app.downloads !== undefined ? Number(app.downloads).toLocaleString() : '—';
-      const statSize = document.getElementById('detail-stat-filesize');
-      if (statSize) statSize.textContent = app.file_size || '—';
-      const statCat = document.getElementById('detail-stat-category');
-      if (statCat) statCat.textContent = app.category || '—';
-      const statDev = document.getElementById('detail-stat-developer');
-      if (statDev) statDev.textContent = app.developer || '—';
-      const statSub = document.getElementById('detail-stat-submittedby');
-      if (statSub) statSub.textContent = app.submitted_by || '—';
+      const downloads = document.getElementById('detail-stat-downloads');
+      if (downloads) downloads.textContent = item.downloads !== undefined ? Number(item.downloads).toLocaleString() : '—';
+      const size = document.getElementById('detail-stat-filesize');
+      if (size) size.textContent = item.file_size || '—';
+      const cat = document.getElementById('detail-stat-category');
+      if (cat) cat.textContent = item.category || '—';
+      const dev = document.getElementById('detail-stat-developer');
+      if (dev) dev.textContent = item.developer || '—';
+      const sub = document.getElementById('detail-stat-submittedby');
+      if (sub) sub.textContent = item.submitted_by || '—';
 
-      const descContent = document.getElementById('detail-desc-content');
-      const descWrapper = document.getElementById('detail-desc-wrapper');
-      const descBtn = document.getElementById('detail-desc-btn');
-      if (descContent && descWrapper && descBtn) {
-        descContent.innerHTML = app.description || '';
-        descWrapper.classList.add('desc-12-lines');
-        descBtn.textContent = 'Read more';
-        setTimeout(() => {
-          if (descContent.scrollHeight > descWrapper.clientHeight) {
-            descBtn.classList.remove('hidden');
+      const desc_body = document.getElementById('detail-desc-content');
+      const desc_wrap = document.getElementById('detail-desc-wrapper');
+      const desc_toggle = document.getElementById('detail-desc-btn');
+      
+      if (desc_body && desc_wrap && desc_toggle) {
+        desc_body.innerHTML = item.description || '';
+        desc_wrap.classList.add('desc-12-lines');
+        desc_toggle.textContent = 'Read more';
+        setTimeout(function() {
+          if (desc_body.scrollHeight > desc_wrap.clientHeight) {
+            desc_toggle.classList.remove('hidden');
           } else {
-            descBtn.classList.add('hidden');
-            descWrapper.classList.remove('desc-12-lines');
+            desc_toggle.classList.add('hidden');
+            desc_wrap.classList.remove('desc-12-lines');
           }
-        }, 60);
+        }, 50);
       }
 
-      const tlContainer = document.getElementById('versions-timeline-container');
-      if (tlContainer) {
-        tlContainer.innerHTML = '<div class="absolute left-2.5 top-3 bottom-3 w-[2px] bg-white/10 pointer-events-none"></div>';
-        let versions = [];
-        if (supabaseClient) {
+      const timeline = document.getElementById('versions-timeline-container');
+      if (timeline) {
+        timeline.innerHTML = '<div class="absolute left-2.5 top-3 bottom-3 w-[2px] bg-white/10 pointer-events-none"></div>';
+        let logs = [];
+        if (db) {
           try {
-            const { data } = await supabaseClient.from('app_versions').select('*').eq('app_id', app.id).order('release_date', { ascending: false });
-            if (data && data.length > 0) versions = data;
-          } catch (e) {}
+            const res = await db.from('app_versions').select('*').eq('app_id', item.id).order('release_date', { ascending: false });
+            if (res.data && res.data.length > 0) logs = res.data;
+          } catch (err) {
+            console.warn("Failed fetching version logs:", err);
+          }
         }
-        if (versions.length > 0) {
-          versions.forEach((ver, index) => {
-            const isLatest = index === 0;
-            const dot = isLatest ? `<div class="absolute -left-[23px] top-1.5 flex items-center justify-center">
-              <span class="animate-ping absolute inline-flex h-3.5 w-3.5 rounded-full bg-white opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white shadow-[0_0_12px_#ffffff]"></span>
-            </div>` : `<div class="absolute -left-[20px] top-1.5 h-2 w-2 rounded-full bg-white/30"></div>`;
 
-            tlContainer.innerHTML += `
+        if (logs.length > 0) {
+          logs.forEach(function(ver, idx) {
+            const is_newest = idx === 0;
+            const marker = is_newest ? `
+              <div class="absolute -left-[23px] top-1.5 flex items-center justify-center">
+                <span class="animate-ping absolute inline-flex h-3.5 w-3.5 rounded-full bg-white opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white shadow-[0_0_12px_#ffffff]"></span>
+              </div>` : `<div class="absolute -left-[20px] top-1.5 h-2 w-2 rounded-full bg-white/30"></div>`;
+
+            timeline.innerHTML += `
               <div class="relative transition-all">
-                ${dot}
+                ${marker}
                 <div class="flex items-center justify-between">
-                  <button onclick="toggleVersionNotes('ver-${ver.id || index}')" class="font-bold text-base text-white hover:text-purple-300 transition-colors cursor-pointer text-left">
+                  <button onclick="toggle_version_notes('ver-${ver.id || idx}')" class="font-bold text-base text-white hover:text-purple-300 transition-colors cursor-pointer text-left">
                     ${ver.version_name || ''}
                   </button>
                   <span class="text-xs text-gray-400 font-medium">${ver.release_date ? new Date(ver.release_date).toLocaleDateString(undefined, {month:'short', year:'numeric'}) : ''}</span>
                 </div>
-                <div id="notes-ver-${ver.id || index}" class="mt-2 text-xs text-gray-300 font-normal leading-relaxed hidden">
+                <div id="notes-ver-${ver.id || idx}" class="mt-2 text-xs text-gray-300 font-normal leading-relaxed hidden">
                   ${ver.changelog || ''}
                 </div>
               </div>
             `;
           });
         } else {
-          tlContainer.innerHTML += `<p class="text-xs text-gray-500">No version history recorded.</p>`;
+          timeline.innerHTML += `<p class="text-xs text-gray-500">No version history recorded.</p>`;
         }
       }
 
-      const relatedGrid = document.getElementById('related-apps-grid');
-      if (relatedGrid) {
-        const relatedApps = storeApps.filter(x => x.category === app.category && String(x.id) !== String(app.id)).slice(0, 3);
-        if (relatedApps.length > 0) {
-          relatedGrid.innerHTML = relatedApps.map(generateAppCardHTML).join('');
+      const rel_grid = document.getElementById('related-apps-grid');
+      if (rel_grid) {
+        const related = apps.filter(function(x) {
+          return x.category === item.category && String(x.id) !== String(item.id);
+        }).slice(0, 3);
+
+        if (related.length > 0) {
+          rel_grid.innerHTML = related.map(build_card).join('');
         } else {
-          relatedGrid.innerHTML = '<p class="text-xs text-gray-500 w-full col-span-full">No related apps found.</p>';
+          rel_grid.innerHTML = '<p class="text-xs text-gray-500 w-full col-span-full">No related apps found.</p>';
         }
       }
 
-      showView('app-details-view');
+      show_page('app-details-view');
     }
 
-    function launchAppPlayer(updateHash = true) {
-      if (!currentDetailedApp) return;
+    function launch_player(update_hash = true) {
+      if (!active_app) return;
 
-      if (updateHash) window.location.hash = `play/${currentDetailedApp.id}`;
+      if (update_hash) window.location.hash = `play/${active_app.id}`;
 
-      const playerTitle = document.getElementById('player-app-title');
-      const playerIframe = document.getElementById('player-iframe');
-      const loaderOverlay = document.getElementById('player-loader-overlay');
-      const loaderTip = document.getElementById('player-loader-tip');
+      const title = document.getElementById('player-app-title');
+      const frame = document.getElementById('player-iframe');
+      const overlay = document.getElementById('player-loader-overlay');
+      const tip_el = document.getElementById('player-loader-tip');
 
-      if (playerTitle) playerTitle.textContent = currentDetailedApp.name || 'App Player';
+      if (title) title.textContent = active_app.name || 'App Player';
 
-      const randomTip = loadingTips[Math.floor(Math.random() * loadingTips.length)];
-      if (loaderTip) loaderTip.textContent = randomTip;
+      const tip_msg = splash_tips[Math.floor(Math.random() * splash_tips.length)];
+      if (tip_el) tip_el.textContent = tip_msg;
 
-      if (loaderOverlay) {
-        loaderOverlay.classList.remove('hidden');
-        loaderOverlay.classList.remove('opacity-0', 'pointer-events-none');
+      if (overlay) {
+        overlay.classList.remove('hidden');
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
       }
 
-      if (playerIframe) {
-        if (currentDetailedApp.html_code) {
-          playerIframe.srcdoc = currentDetailedApp.html_code;
+      if (frame) {
+        if (active_app.html_code) {
+          frame.srcdoc = active_app.html_code;
         } else {
-          playerIframe.src = currentDetailedApp.app_url || 'about:blank';
+          frame.src = active_app.app_url || 'about:blank';
         }
       }
 
-      showView('app-player-view');
+      show_page('app-player-view');
 
-      const fakeDelay = Math.floor(Math.random() * 1200) + 1800;
-      setTimeout(() => {
-        if (loaderOverlay) {
-          loaderOverlay.classList.add('opacity-0', 'pointer-events-none');
-          setTimeout(() => loaderOverlay.classList.add('hidden'), 300);
+      const load_delay = Math.floor(Math.random() * 1000) + 1500;
+      setTimeout(function() {
+        if (overlay) {
+          overlay.classList.add('opacity-0', 'pointer-events-none');
+          setTimeout(function() { overlay.classList.add('hidden'); }, 300);
         }
-      }, fakeDelay);
+      }, load_delay);
     }
 
-    function closeAppPlayer() {
-      const playerIframe = document.getElementById('player-iframe');
-      if (playerIframe) {
-        playerIframe.src = 'about:blank';
-        playerIframe.removeAttribute('srcdoc');
+    function exit_player_mode() {
+      const frame = document.getElementById('player-iframe');
+      if (frame) {
+        frame.src = 'about:blank';
+        frame.removeAttribute('srcdoc');
       }
       if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
+        document.exitFullscreen().catch(function() {});
       }
-      if (currentDetailedApp) {
-        window.location.hash = `app/${currentDetailedApp.id}`;
-        showView('app-details-view');
+      if (active_app) {
+        window.location.hash = `app/${active_app.id}`;
+        show_page('app-details-view');
       } else {
         window.location.hash = 'home';
-        showView('home-page-view');
+        show_page('home-page-view');
       }
     }
 
-    function openInNewTab() {
-      if (!currentDetailedApp || !currentDetailedApp.app_url) return;
-      window.open(currentDetailedApp.app_url, '_blank');
+    function open_external_tab() {
+      if (!active_app || !active_app.app_url) return;
+      window.open(active_app.app_url, '_blank');
     }
 
-    function downloadCurrentApp() {
-      if (!currentDetailedApp) return;
-      const downloadTarget = currentDetailedApp.download_url || currentDetailedApp.app_url;
-      if (!downloadTarget) return;
-      const a = document.createElement('a');
-      a.href = downloadTarget;
-      a.download = currentDetailedApp.name || 'download';
-      a.target = '_blank';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+    function dl_current_app() {
+      if (!active_app) return;
+      const target = active_app.download_url || active_app.app_url;
+      if (!target) return;
+
+      const link = document.createElement('a');
+      link.href = target;
+      link.download = active_app.name || 'download';
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
-    function togglePlayerFullscreen() {
-      const container = document.getElementById('app-player-view');
-      if (!container) return;
+    function toggle_fs() {
+      const p_view = document.getElementById('app-player-view');
+      if (!p_view) return;
+      
       if (!document.fullscreenElement) {
-        container.requestFullscreen().catch(err => console.error(err));
+        p_view.requestFullscreen().catch(function(e) { console.error("Fullscreen error:", e); });
       } else {
-        document.exitFullscreen().catch(err => console.error(err));
+        document.exitFullscreen().catch(function(e) { console.error("Exit fullscreen error:", e); });
       }
     }
 
-    function toggleDescription() {
-      const descWrapper = document.getElementById('detail-desc-wrapper');
-      const descBtn = document.getElementById('detail-desc-btn');
-      if (descWrapper && descBtn) {
-        if (descWrapper.classList.contains('desc-12-lines')) {
-          descWrapper.classList.remove('desc-12-lines');
-          descBtn.textContent = 'Read less';
+    function toggle_desc_full() {
+      const wrap = document.getElementById('detail-desc-wrapper');
+      const btn = document.getElementById('detail-desc-btn');
+      if (wrap && btn) {
+        if (wrap.classList.contains('desc-12-lines')) {
+          wrap.classList.remove('desc-12-lines');
+          btn.textContent = 'Read less';
         } else {
-          descWrapper.classList.add('desc-12-lines');
-          descBtn.textContent = 'Read more';
+          wrap.classList.add('desc-12-lines');
+          btn.textContent = 'Read more';
         }
       }
     }
 
-    function toggleVersionNotes(verKey) {
-      const notes = document.getElementById(`notes-${verKey}`);
-      if (notes) notes.classList.toggle('hidden');
+    function toggle_version_notes(key) {
+      const target = document.getElementById(`notes-${key}`);
+      if (target) target.classList.toggle('hidden');
     }
 
-    let isMobileSearchOpen = false;
-    function toggleMobileSearch() {
-      const categoryBar = document.getElementById('mobile-category-bar');
-      const searchWrapper = document.getElementById('mobile-search-wrapper');
-      const searchIcon = document.getElementById('mobile-search-icon');
-      const searchInput = document.getElementById('mobile-search-input');
+    let is_mob_search_active = false;
+    function toggle_mob_search() {
+      const cats = document.getElementById('mobile-category-bar');
+      const search_box = document.getElementById('mobile-search-wrapper');
+      const search_icon = document.getElementById('mobile-search-icon');
+      const input = document.getElementById('mobile-search-input');
 
-      isMobileSearchOpen = !isMobileSearchOpen;
+      is_mob_search_active = !is_mob_search_active;
 
-      if (isMobileSearchOpen) {
-        categoryBar.classList.add('max-w-0', 'opacity-0', 'pointer-events-none');
-        searchWrapper.classList.remove('mobile-search-closed');
-        searchWrapper.classList.add('mobile-search-open');
-        if (searchIcon) searchIcon.style.transform = 'rotate(90deg)';
-        setTimeout(() => searchInput?.focus(), 150);
+      if (is_mob_search_active) {
+        cats.classList.add('max-w-0', 'opacity-0', 'pointer-events-none');
+        search_box.classList.remove('mobile-search-closed');
+        search_box.classList.add('mobile-search-open');
+        if (search_icon) search_icon.style.transform = 'rotate(90deg)';
+        setTimeout(function() { if (input) input.focus(); }, 150);
       } else {
-        categoryBar.classList.remove('max-w-0', 'opacity-0', 'pointer-events-none');
-        searchWrapper.classList.remove('mobile-search-open');
-        searchWrapper.classList.add('mobile-search-closed');
-        if (searchIcon) searchIcon.style.transform = 'rotate(0deg)';
+        cats.classList.remove('max-w-0', 'opacity-0', 'pointer-events-none');
+        search_box.classList.remove('mobile-search-open');
+        search_box.classList.add('mobile-search-closed');
+        if (search_icon) search_icon.style.transform = 'rotate(0deg)';
       }
     }
 
-    window.addEventListener('hashchange', handleHashRouter);
+    window.addEventListener('hashchange', router);
 
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
-      initApp().finally(() => setTimeout(dismissLoader, 400));
+      init_app().finally(function() { setTimeout(hide_startup_loader, 400); });
     } else {
-      document.addEventListener('DOMContentLoaded', () => {
-        initApp().finally(() => setTimeout(dismissLoader, 400));
+      document.addEventListener('DOMContentLoaded', function() {
+        init_app().finally(function() { setTimeout(hide_startup_loader, 400); });
       });
     }
-    setTimeout(dismissLoader, 3000);
+    setTimeout(hide_startup_loader, 3000);
   </script>
 </body>
 </html>
