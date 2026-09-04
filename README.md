@@ -1,7 +1,8 @@
-V 1.5.0
+V 1.7.2
 ------
-- Upgraded Proxy 
-- Added higher security
-- removed several ads from games
+- Added settings
+- Upgraded optimization
+- Added clocking
+- faster proxy
 
 JOIN DISCORD - https://discord.gg/tGtmvPPNvY
