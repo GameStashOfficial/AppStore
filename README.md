@@ -10,5 +10,7 @@ V 2.0.0
 - Chatgpt
 - fix looding bug
 - Removed Ads from several games
+  
+You really don't need the JS files since everything is already in the html
 
 JOIN DISCORD - https://discord.gg/tGtmvPPNvY
