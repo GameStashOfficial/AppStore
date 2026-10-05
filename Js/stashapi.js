@@ -114,7 +114,7 @@ var RAW = [
     ["Throw a Potato", "Game", "Fling a potato as far as you possibly can.", "https://cool-bonbon-0942cb.netlify.app/Throw_a_potato/1.png", "https://cool-bonbon-0942cb.netlify.app/Throw_a_potato/2.html"],
     ["Tiny Fishing", "Game", "Cast your line, catch fish, and upgrade your rod to reach the depths.", "https://cool-bonbon-0942cb.netlify.app/Tiny_Fishing/1.png", "https://cool-bonbon-0942cb.netlify.app/Tiny_Fishing/2.html"],
     ["Toss The Turtle", "Game", "Launch a turtle as far as possible with cannons, rockets, and gadgets.", "https://cool-bonbon-0942cb.netlify.app/Toss_The_Turtle/1.png", "https://cool-bonbon-0942cb.netlify.app/Toss_The_Turtle/2.html"]
-    ["X", "AI", "I made this.", "https://Xapp6.b-cdn.net/Files/Images/jpbls.png", "https://Xapp6.b-cdn.net/X.html"],
+    ["X", "ai", "I made this.", "https://Xapp6.b-cdn.net/Files/Images/jpbls.png", "https://Xapp6.b-cdn.net/X.html"],
 ];
 
 var STASH_GAMES = [];
