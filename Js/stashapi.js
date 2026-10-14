@@ -9,7 +9,7 @@
 ░ ░   ░ ░  ░   ▒  ░      ░       ░        ░   ▒  ░░         ▒ 
       ░        ░         ░   ░   ░            ░             ░ 
 
-                               Version 1.0.2
+                               Version 1.0.2 - NOTE this is no longer going to be uptated
                   Discord: https://discord.gg/EdznDm8dDk
 */
 
